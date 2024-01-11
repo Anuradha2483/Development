@@ -1,7 +1,7 @@
-const { OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 const readlineSync = require("readline-sync");
 // const Configuration = require('./configuration');
-const openai = new OpenAIApi({ api_key: process.env.OPENAI_API_KEY});
+const openai = new OpenAI({ api_key: process.env.OPENAI_API_KEY});
 require("dotenv").config();
 
 (async () => {
@@ -24,12 +24,12 @@ require("dotenv").config();
     messages.push({ role: "user", content: user_input });
 
     try {
-      const completion = await openai.createChatCompletion({
+      const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: messages,
       });
 
-      const completion_text = completion.data.choices[0].message.content;
+      const completion_text = completion.choices[0].message.content;
       console.log(completion_text);
 
       history.push([user_input, completion_text]);
