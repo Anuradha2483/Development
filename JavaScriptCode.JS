@@ -50,7 +50,13 @@ function invoke_LLM(output) {
     const model = 'gpt-3.5-turbo-16k-0613';
     const rows_final = output;
 
-    const chat = new OpenAI({openai_api_key: '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', model: model});
+    const chat = new OpenAIApi({openai_api_key: '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', model: model});
+    template = "You are an expert financial analyst. As analysts, you calculate and show sales numbers and draw insights using the data to explain the favorable and unfavorable factors towards the year over year sales revenue. You are provided with a JSON string {output} containing the monthly sales information containing the following fields";
+    const prompt = new ChatPromptTemplate({ inputVariables: ["rows", "user_input"],template: template, validateTemplate: false });
+    const finalPrompt = prompt.format({ rows: rows_final });
+    
+    const insights = chat.predict(finalPrompt);
+    return insights;
     };
 const llm_response = fetchdata();
 console.log(llm_response);
